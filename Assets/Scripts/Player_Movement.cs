@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Jump() {
-        if (Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || coyoteTimeCounter > 0) && !IsWalled()) {
+        if (Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || coyoteTimeCounter > 0) && (!IsWalledL() && !IsWalledR())) {
             isJumping = true;
             currentJumpTime = MaxJumpTime;
         }
@@ -139,9 +139,12 @@ public class PlayerMovement : MonoBehaviour {
         playerTransform.Translate(Vector2.up * gravity * Time.deltaTime);
     }
 
-    private bool IsWalled() {
-        return Physics2D.OverlapCircle(wallCheckL.position, WallCheckRadius, WallLayer) ||
-               Physics2D.OverlapCircle(wallCheckR.position, WallCheckRadius, WallLayer);
+    private bool IsWalledL() {
+        return Physics2D.OverlapCircle(wallCheckL.position, WallCheckRadius, WallLayer);        
+    }
+    private bool IsWalledR()
+    {
+        return Physics2D.OverlapCircle(wallCheckR.position, WallCheckRadius, WallLayer);
     }
 
     private bool IsGrounded() {
@@ -156,7 +159,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void WallSlide() {
-        if (IsWalled() && !IsGrounded() && !isWallJumping) {
+        if ((IsWalledL() || IsWalledR()) && !IsGrounded() && !isWallJumping) {
             isWallSliding = true;
             playerTransform.position += Vector3.down * wallSlidingSpeed * Time.deltaTime;
         } else {
@@ -173,10 +176,12 @@ public class PlayerMovement : MonoBehaviour {
         if (isWallJumping) {
             if (Input.GetKey(KeyCode.Space) && wallJumpTimeCounter > 0) {
                 playerTransform.position += Vector3.up * wallJumpForce * Time.deltaTime;
-                if(isFacingRight) {
-                    playerTransform.position += Vector3.right * 20 * Time.deltaTime;
-                } else {
-                    playerTransform.position += Vector3.left * 20 * Time.deltaTime;
+                if(IsWalledL()) {
+                    playerTransform.position += Vector3.right * 50 * Time.deltaTime;
+                } 
+                if(IsWalledR())
+                {
+                    playerTransform.position += Vector3.left * 50 * Time.deltaTime;
                 }
                 wallJumpTimeCounter -= Time.deltaTime;
             } else {
