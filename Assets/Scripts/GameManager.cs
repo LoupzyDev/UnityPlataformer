@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 
 public enum GameState {
     None,
     MainMenu,
     Playing,
+    Victory,
     GameOver
 }
 public class GameManager : MonoBehaviour
@@ -31,7 +32,10 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 break;
+            case GameState.Victory:
+                break;
             case GameState.GameOver:
+                Restart();
                 break;
         }
     }
@@ -44,4 +48,8 @@ public class GameManager : MonoBehaviour
     public void changeGameStateFromEditor(string newState) {
         changeGameState((GameState)System.Enum.Parse(typeof(GameState), newState));
     }
+    public void Restart() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 }
