@@ -13,6 +13,7 @@ public enum GameState {
 }
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject VictoryPanel;
     public static GameManager _instance;
     GameState gameState;
 
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
             case GameState.Playing:
                 break;
             case GameState.Victory:
+                Time.timeScale = 0f;
+                VictoryPanel.SetActive(true);
                 break;
             case GameState.GameOver:
                 Restart();

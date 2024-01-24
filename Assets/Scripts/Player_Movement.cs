@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Jump() {
-        if (Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || coyoteTimeCounter > 0)) {
+        if (Input.GetKeyDown(KeyCode.Space) && (IsGrounded() || coyoteTimeCounter > 0) && !IsWalled()) {
             isJumping = true;
             currentJumpTime = MaxJumpTime;
         }
